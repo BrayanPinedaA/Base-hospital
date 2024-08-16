@@ -1,0 +1,138 @@
+CREATE DATABASE Hospital
+    DEFAULT CHARACTER SET = 'utf8mb4';
+
+    USE Hospital
+
+    CREATE TABLE Pacientes(
+        N_Seguridad int (15) AUTO_INCREMENT PRIMARY KEY,
+        Id_Pac int (15),
+        CI VARCHAR (12),
+        Nombres VARCHAR (25),
+        Apellidos VARCHAR (25),
+        F_Nacimiento DATETIME
+    )
+
+    CREATE TABLE Plantas_Camas(
+        N_Plantas INTEGER (15) AUTO_INCREMENT PRIMARY KEY,
+        Id_plca INTEGER (15),
+        Nom_Paciente VARCHAR(20),
+        Num_Camas INTEGER (10)
+    )
+
+    CREATE TABLE Tarjetas_visitas(
+        Num_Tarjeta INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Id_tarv INTEGER (10),
+        Hora_Comienzo DATETIME,
+        Hora_Fin DATETIME
+    )
+
+    CREATE TABLE Medicos(
+        ID_Medico INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Id_med INTEGER (10),
+        Nombres VARCHAR (25),
+        Apellidos VARCHAR (25)
+    )
+
+    CREATE TABLE Medicos_Atencion(
+        ID_Atencion INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Id_medat INTEGER (10),
+        Fecha_Medica DATETIME,
+        Hora_Medica DATETIME
+    )
+
+    CREATE TABLE Diagnostico_Paciente(
+        ID_Visita INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Id_diapa INTEGER (10),
+        ID_Diagnostico INTEGER (10),
+        Descripcion_Diagnosticos VARCHAR (100),
+        Fecha_Diagnostico DATETIME
+    )
+
+    CREATE TABLE Fichero_Historico(
+        ID_Paciente INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Id_fichi INTEGER (10),
+        Fecha_Inicio DATETIME,
+        Datos_Paciente VARCHAR (50),
+        Datos_Medico VARCHAR (50),
+        Actorizaciones VARCHAR (50),
+        Antecedentes VARCHAR (50),
+        Fecha_Salida DATETIME
+    )
+
+    CREATE TABLE Atencion_Diagnostico(
+        Atencion_M INTEGER (10) AUTO_INCREMENT PRIMARY KEY,
+        Diagnostico_P INTEGER (10)
+    )
+
+
+    -- alter para modificar una tabla
+
+    ALTER TABLE Plantas_Camas ADD CONSTRAINT fk_uno FOREIGN KEY (Id_plca) REFERENCES Pacientes (N_Seguridad);
+
+    ALTER TABLE Tarjetas_visitas ADD CONSTRAINT fk_dos FOREIGN KEY (id_tarv) REFERENCES Pacientes (N_Seguridad);
+
+    ALTER TABLE Fichero_Historico ADD CONSTRAINT fk_tres FOREIGN KEY (Id_fichi) REFERENCES Pacientes (N_Seguridad);
+
+    ALTER TABLE Pacientes ADD CONSTRAINT fk_cuatro FOREIGN KEY (Id_Pac) REFERENCES Medicos (ID_Medico);
+
+    ALTER TABLE Medicos ADD CONSTRAINT fk_cinco FOREIGN KEY (Id_med) REFERENCES Medicos_Atencion (ID_Atencion);
+
+    ALTER TABLE Medicos_Atencion ADD CONSTRAINT fk_seis FOREIGN KEY (Id_medat) REFERENCES Atencion_Diagnostico (Atencion_M);
+
+    ALTER TABLE Atencion_Diagnostico ADD CONSTRAINT fk_siete FOREIGN KEY (Diagnostico_P) REFERENCES Diagnostico_Paciente (ID_Visita);
+
+    ALTER TABLE Fichero_Historico ADD CONSTRAINT fk_ocho FOREIGN KEY (Id_fichi) REFERENCES Pacientes (N_Seguridad);
+
+    --Datos Tablas
+    -- Pacientes
+    INSERT INTO Pacientes  (CI,Nombres,Apellidos,F_Nacimiento) VALUES ("De Acuerdo", "Juan Jose", " Torres Alegria", "2000-07-12" );
+    INSERT INTO Pacientes  (CI,Nombres,Apellidos,F_Nacimiento) VALUES ("De Acuerdo", "Andres Camilo", "Rueda Rojas", "1995-12-24" );
+    INSERT INTO Pacientes  (CI,Nombres,Apellidos,F_Nacimiento) VALUES ("Desacuerdo", "Ricardo", " Tapia Wayne", "1996-12-1" );
+    INSERT INTO Pacientes  (CI,Nombres,Apellidos,F_Nacimiento) VALUES ("Desacuerdo", "Jose Luis", " Caños Torres", "2001-10-09" );
+    INSERT INTO Pacientes  (CI,Nombres,Apellidos,F_Nacimiento) VALUES ("De Acuerdo", "Nicol Sofia", "Ramos Mazorco", "2006-02-14" );
+
+
+    -- Plantas_Camas
+    INSERT INTO Plantas_Camas  (Nom_Paciente,Num_Camas) VALUES ("Luis", "4");
+    INSERT INTO Plantas_Camas  (Nom_Paciente,Num_Camas) VALUES ("Bruce", "2");
+    INSERT INTO Plantas_Camas  (Nom_Paciente,Num_Camas) VALUES ("Louis", "6");
+    INSERT INTO Plantas_Camas  (Nom_Paciente,Num_Camas) VALUES ("Jeisson", "7");
+    INSERT INTO Plantas_Camas  (Nom_Paciente,Num_Camas) VALUES ("Nicolas", "12");
+
+    -- Tarjetas_visitas
+    INSERT INTO Tarjetas_visitas (Hora_Comienzo,Hora_Fin) VALUES ("2023-08-12 6:00", "2024-12-28 13:30" );
+    INSERT INTO Tarjetas_visitas (Hora_Comienzo,Hora_Fin) VALUES ("2021-03-20 17:00", "2023-05-22 16:45" );
+    INSERT INTO Tarjetas_visitas (Hora_Comienzo,Hora_Fin) VALUES ("2022-11-18 12:00", "2020-03-11 13:35" );
+    INSERT INTO Tarjetas_visitas (Hora_Comienzo,Hora_Fin) VALUES ("2023-01-26 20:00", "2024-06-25 11:30" );
+    INSERT INTO Tarjetas_visitas (Hora_Comienzo,Hora_Fin) VALUES ("2022-08-30 4:00", "2023-10-03 15:30" );
+
+    --Medicos
+    INSERT INTO Medicos (Nombres,Apellidos) VALUES ("Albet Camilo", "Correa Lopez" );
+    INSERT INTO Medicos (Nombres,Apellidos) VALUES ("Camila Sofia", "Snaider Mendez" );
+    INSERT INTO Medicos (Nombres,Apellidos) VALUES ("Andrea Sofia", "Dueñas Vega" );
+    INSERT INTO Medicos (Nombres,Apellidos) VALUES ("Andres Camilo", "Rueda Albarez" );
+    INSERT INTO Medicos (Nombres,Apellidos) VALUES ("Lissana Andry", "Mendez Vega" );
+
+    -- Medicos_Atenciom
+    INSERT INTO Medicos_Atencion (Fecha_Medica,Hora_Medica) VALUES ("2024-01-23", "2024-01-23 8:00");
+    INSERT INTO Medicos_Atencion (Fecha_Medica,Hora_Medica) VALUES ("2024-04-10", "2024-04-10 10:00");
+    INSERT INTO Medicos_Atencion (Fecha_Medica,Hora_Medica) VALUES ("2024-07-21", "2024-07-21 12:00");
+    INSERT INTO Medicos_Atencion (Fecha_Medica,Hora_Medica) VALUES ("2024-10-07", "2024-10-07 22:00");
+    INSERT INTO Medicos_Atencion (Fecha_Medica,Hora_Medica) VALUES ("2024-12-28", "2024-12-28 17:00");
+
+
+    -- Diagnostico_Paciente
+    INSERT INTO Diagnostico_Paciente  (ID_Diagnostico,Descripcion_Diagnosticos,Fecha_Diagnostico) VALUES ("2342", "Paciente con la pierna rota", "2024-05-25 5:00");
+    INSERT INTO Diagnostico_Paciente  (ID_Diagnostico,Descripcion_Diagnosticos,Fecha_Diagnostico) VALUES ("1203", "Paciente con cancer de pulmon leve", "2024-03-03 10:00");
+    INSERT INTO Diagnostico_Paciente  (ID_Diagnostico,Descripcion_Diagnosticos,Fecha_Diagnostico) VALUES ("3278", "Paciente con el brazo izq fracturado", "2024-10-09 8:00");
+    INSERT INTO Diagnostico_Paciente  (ID_Diagnostico,Descripcion_Diagnosticos,Fecha_Diagnostico) VALUES ("2912", "Paciente con perdida de vista", "2024-06-20 23:00");
+    INSERT INTO Diagnostico_Paciente  (ID_Diagnostico,Descripcion_Diagnosticos,Fecha_Diagnostico) VALUES ("5432", "Paciente con el pecho apuñalado", "2024-09-31 14:00");
+
+    -- Fichero_Historico
+    INSERT INTO Fichero_Historico  (Fecha_Inicio,Datos_Paciente,Datos_Medico,Actorizaciones,Antecedentes,Fecha_Salida) VALUES ("2024-01-10", "Luis comenzo sus terapias de pulmones", "Jose Alberto", "SI", "Sano", "2024-12-05" );
+    INSERT INTO Fichero_Historico  (Fecha_Inicio,Datos_Paciente,Datos_Medico,Actorizaciones,Antecedentes,Fecha_Salida) VALUES ("2024-12-21", "Bryan termino sus terapias de cancer", "Luisa Camila", "Completas", "Sano", "2024-10-15" );
+    INSERT INTO Fichero_Historico  (Fecha_Inicio,Datos_Paciente,Datos_Medico,Actorizaciones,Antecedentes,Fecha_Salida) VALUES ("2024-05-22", "Johan comenzo sus terapias de ruptura de pierna", "Sergio Alferez", "Incompletas", "Sano", "2024-08-18" );
+    INSERT INTO Fichero_Historico  (Fecha_Inicio,Datos_Paciente,Datos_Medico,Actorizaciones,Antecedentes,Fecha_Salida) VALUES ("2024-09-04", "Sebastian comenzo sus terapias de apuntes", "Laura Mendez", "Si", "Sano", "2024-03-21" );
+    INSERT INTO Fichero_Historico  (Fecha_Inicio,Datos_Paciente,Datos_Medico,Actorizaciones,Antecedentes,Fecha_Salida) VALUES ("2024-10-29", "Luisa comenzo sus terapias para la perdida de vita", "Sandy Sanchez ", "Completas", "Sano", "2024-08-31" );
+
+    DROP DATABASE Hospital;
